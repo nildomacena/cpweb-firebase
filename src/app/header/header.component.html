@@ -1,0 +1,17 @@
+<ul id="dropdown1" class="dropdown-content">
+    <li><a routerLink="/processos" routerLinkActive="active" >Listar processos</a></li>
+    <li><a routerLink="/processo" routerLinkActive="active" >Consultar</a></li>
+    <li><a routerLink="/cadastrar_processo">Cadastrar</a></li>
+  </ul>
+
+<nav class="navbar navbar-default">
+  <div class="nav-wrapper">
+    <a href="#" class="brand-logo">CpWeb</a>
+    <ul id="nav-mobile" class="right hide-on-med-and-down">      
+      <li routerLinkActive="active" ><a class="dropdown-button" href="#!" data-activates="dropdown1">Processos</a></li> 
+      <li routerLinkActive="active"><a routerLink="/empenho" >Notas de Empenho</a></li>
+      <li routerLinkActive="active"><a routerLink="/notafiscal" >Nota Fiscal</a></li>
+      <li *ngIf="user" ><a (click)="onLogout()" >Sair</a></li>
+    </ul>
+  </div>
+</nav>

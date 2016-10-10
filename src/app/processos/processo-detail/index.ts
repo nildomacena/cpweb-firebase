@@ -1,0 +1,1 @@
+export * from './processo-detail.component';

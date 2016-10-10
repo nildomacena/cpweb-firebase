@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="col s6 offset-s3">
+    <ul class="collection" >
+      <li class="collection-item" *ngFor="let item of items | async" (click)="onSelectItem(item.$key)" >
+        {{item.texto}}
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="row" *ngIf="itemObject">
+  <div class="col s6 offset-s3">
+    <h3>{{texto}}</h3>
+  </div>
+</div>
+
+<hr>
+<div class="row">
+  <div class="col s6 offset-s3">
+    <ul>
+      <li *ngFor="let item of items | async">
+        <input type="text" #updatetext [value]="item.texto" />
+        <button (click)="updateItem(item.$key, updatetext.value)">Update</button>
+        <button (click)="deleteItem(item.$key)">Delete</button>
+      </li>
+    </ul>
+    <input type="text" #newitem />
+    <button (click)="addItem(newitem.value)">Add</button>
+    <button (click)="deleteEverything()">Delete All</button>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col s6 offset-s3">
+    <input type="text" #sendText placeholder="Digite o texto">
+    <button class="btn" (click)="onSubmitText(sendText.value)" >Enviar</button>
+  </div>
+</div>

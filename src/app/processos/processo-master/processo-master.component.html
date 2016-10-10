@@ -1,0 +1,25 @@
+<div class="row">
+  <form>
+    <div class="col s12">
+      <div class="row">
+        <div class="input-field col s12">
+          <i class="material-icons prefix">search</i>
+          <input id="search" type="search" (keyup)="search(input.value)" #input >
+          <label for="search">Pesquisar processos</label>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="row">
+  <div class="col s12">
+    <div class="collection">
+      <a class="collection-item" (click)="goToDetails(processo.$key)" *ngFor="let processo of filteredProcessos" >
+        <span class="title"><b>{{processo.numero}}/{{processo.ano}}</b></span>
+        <p>Fornecedor: {{processo.fornecedor}}</p>
+        <p>Objeto: {{processo.objeto}} </p>
+      </a>
+    </div>
+  </div>
+</div>
+<button class="btn" (click)="listProcessos()" >ListProcessos</button>

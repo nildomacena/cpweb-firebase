@@ -7,8 +7,27 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 </head>
 <body>
   <app-root>Loading...</app-root>
+  <script src="https://www.gstatic.com/firebasejs/3.4.1/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyCgIyt1k90LdrVilfdsk_nx6rpE7_aQGRo",
+      authDomain: "cpweb-dc825.firebaseapp.com",
+      databaseURL: "https://cpweb-dc825.firebaseio.com",
+      storageBucket: "cpweb-dc825.appspot.com",
+      messagingSenderId: "651869103107"
+    };
+    firebase.initializeApp(config);
+  </script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+  <script type="text/javascript" src="scripts.js"></script>
+
 </body>
 </html>

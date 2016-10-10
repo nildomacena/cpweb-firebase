@@ -1,0 +1,258 @@
+<div class="row">
+  <div class="col s12 center-align">
+    <h3>Cadastro de Processos</h3>
+  </div>
+</div>
+<div class="row">
+  <form class="col s12" [formGroup]="myForm" (ngSubmit)="onSubmit()" >
+    <button class="btn" (click)="consoleMyForm()" >CONSOLE</button>
+    <div class="row">
+      <div class="input-field col s3" >
+        <input id="numero_processo" required type="text" class="validate" formControlName="numero" >
+        <label for="numero_processo">Processo N.:</label>
+      </div>
+      <div class="input-field col s2">
+        <input id="ano_processo" required type="text" class="validate" formControlName="ano">
+        <label for="ano_processo">Ano</label>
+        <small *ngIf="!myForm.controls.ano.valid && myForm.controls.ano.value != ''">Digite um ano válido</small>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col s12">
+        <label for="select_objeto">Objeto</label>
+        <select id="select_objeto" class="browser-default" formControlName="objeto" >
+          <option value="" disabled>Selecione o Objeto do processo</option>
+          <option *ngFor="let obj of objetos" [value]="obj.name">{{obj.name}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="input-field col s12">
+          <textarea id="justificativa" rows="1" class="materialize-textarea"></textarea>
+          <label for="justificativa">Justificativa</label>
+        </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <input id="fornecedor" type="text" formControlName="fornecedor">
+        <label for="fornecedor">Fornecedor</label>
+      </div>
+    </div>
+    <div class="row" formArrayName="itens"  >
+      <div *ngFor="let item of myForm.controls.itens.controls; let i = index" >
+        <div class="row valign-wrapper" [formGroupName]="i" >
+          <div class="input-field col s2">
+            <input id="ata_item{{i}}" type="text" formControlName="ata_item" >
+            <label for="ata_item">Número da Ata</label>
+          </div>
+          <div class="input-field col s1">
+            <input id="numero_item" type="text" formControlName="numero_item">
+            <label for="numero_item">Item</label>
+          </div>
+          <div class="col s2">
+            <label for="datepicker">Vigência</label>
+            <input type="date" id="datepicker" class="datepicker" formControlName="vigencia" >
+          </div>
+            
+          <div class="input-field col s3">
+            <textarea id="descricao_item" class="materialize-textarea" formControlName="descricao_item" > </textarea>
+            <label for="descricao_item">Descrição</label>
+          </div>
+          <div class="input-field col s1">
+            <input id="quantidade_item" type="text" formControlName="quantidade_item" (focus)=calculaValor(i) >
+            <label for="quantidade_item">Quant.</label>
+          </div>
+          <div class="input-field col s1">
+            <input id="preco_item" type="text" formControlName="preco_item" (focus)=calculaValor(i) >
+            <label for="preco_item">Preço</label>
+          </div>
+          <div class="input-field col s2">
+            <input id="valor_total_item" type="text" readonly (focus)=calculaValor(i) [value]="precosItens[i]" >
+            <label for="valor_total_item">Valor Total</label>
+          </div>
+        </div>
+      </div>
+      <div class="row right-align" *ngIf="valorTotalItens != 0">
+        <div class="col s12">
+          <h5>Total do processo: R${{valorTotalItens.toFixed(2)}}</h5>
+        </div>
+      </div>     
+    </div>
+    <div class="row">
+      <div class="col s12 right-align">
+          <button class="btn-floating btn-large waves-effect waves-light red"  [disabled]="!myForm.controls.itens.controls[myForm.controls.itens.length - 1].valid"  (click)="onAddItem()" ><i class="material-icons">add</i> </button>
+          <button class="btn-floating btn-large waves-effect waves-light blue" [disabled]="myForm.controls.itens.length <= 1"  (click)="onRemoveItens()" ><i class="material-icons">remove</i> </button>
+      </div>
+    </div>
+
+    <div *ngIf="myForm.controls.itens.length >= 1"> 
+      <div class="row">
+        <div class="col s12">
+          <hr>
+          <h5 class="center-align">Rateio</h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <table>
+            <thead>
+              <tr>
+                <th class="center-align">Rateio</th>
+                <th class="center-align">HEHA</th>
+                <th  class="center-align">HEPR</th>
+                <th  class="center-align">MESM</th>
+                <th  class="center-align">CPML</th>
+                <th  class="center-align">CER III</th>
+                <th  class="center-align">SVO</th>
+                <th  class="center-align">ETSAL</th>
+                <th  class="center-align">SEDE</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let item of myForm.controls.itens.value; let i = index"  formArrayName="rateio">
+              <tr [formGroupName]="i">
+                  <td style="font-weight:bold" >Item {{item.numero_item}} </td>
+                  <td  class="center-align"><input type="text" formControlName="heha"> </td>
+                  <td  class="center-align"><input type="text" formControlName="hepr"> </td>
+                  <td  class="center-align"><input type="text" formControlName="mesm"> </td>
+                  <td  class="center-align"><input type="text" formControlName="cpml"> </td>
+                  <td  class="center-align"><input type="text" formControlName="cer"> </td>
+                  <td  class="center-align"><input type="text" formControlName="svo"> </td>
+                  <td  class="center-align"><input type="text" formControlName="etsal"> </td>
+                  <td  class="center-align"><input type="text" formControlName="sede"> </td>
+                </tr>
+                <tr>
+                  <td style="font-weight:bold" >Valor</td>
+                  <td class="center-align">R$ {{round(item.preco_item * myForm.value.rateio[i].heha).toFixed(2)}}</td>
+                  <td class="center-align">R$ {{round(item.preco_item * myForm.value.rateio[i].hepr).toFixed(2)}}</td>
+                  <td class="center-align">R$ {{round(item.preco_item * myForm.value.rateio[i].mesm).toFixed(2)}}</td>
+                  <td class="center-align">R$ {{round(item.preco_item * myForm.value.rateio[i].cpml).toFixed(2)}}</td>
+                  <td class="center-align">R$ {{round(item.preco_item * myForm.value.rateio[i].cer).toFixed(2)}}</td>
+                  <td class="center-align">R$ {{round(item.preco_item * myForm.value.rateio[i].svo).toFixed(2)}}</td>
+                  <td class="center-align">R$ {{round(item.preco_item * myForm.value.rateio[i].etsal).toFixed(2)}}</td>
+                  <td class="center-align">R$ {{round(item.preco_item * myForm.value.rateio[i].sede).toFixed(2)}}</td>
+                </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <h5>Endereço de Entrega</h5>
+    <div class="row">  
+      <div class="col s12" formGroupName="endereco_entrega" >
+          <div class="row valign-wrapper" formGroupName="almox_central" >
+            <div class="col s4">
+              <input type="checkbox" id="check" formControlName="check" (change)="onChangeEndereco('almox_central')" />
+              <label for="check">Almoxarifado Central</label>
+            </div>
+            <div class="col s8">
+              <input type="text" id="lbl_entrega_almox_central" formControlName="gestor" placeholder="Gestor do contrato"  formControlName="gestor" />
+            </div>
+          </div>
+
+          <div class="row valign-wrapper" formGroupName="mesm">
+            <div class="col s4">
+              <input type="checkbox" id="cbx_entrega_mesm"  formControlName="check" (change)="onChangeEndereco('mesm')" />
+              <label for="cbx_entrega_mesm">Maternidade Escola Santa Mônica</label>
+            </div>
+
+            <div class="col s8">
+              <input type="text" id="lbl_entrega_mesm" formControlName="gestor" placeholder="Gestor do contrato" />
+            </div>
+          </div>
+
+            <div class="row valign-wrapper" formGroupName="heha"> 
+              <div class="col s4">
+                <input type="checkbox" id="cbx_entrega_heha" formControlName="check" (change)="onChangeEndereco('heha')" />
+                <label for="cbx_entrega_heha">Hospital Escola Hélvio Auto</label>
+              </div>
+
+              <div class="col s8">
+                <input type="text" id="lbl_entrega_heha" formControlName="gestor" placeholder="Gestor do contrato" />
+              </div>
+            </div>              
+            <div class="row valign-wrapper" formGroupName="hepr">
+              <div class="col s4">
+                <input type="checkbox" id="cbx_entrega_hepr" formControlName="check" (change)="onChangeEndereco('hepr')" />
+                <label for="cbx_entrega_hepr">Hospital Escola Portugal Ramalho</label>
+              </div>
+              <div class="col s8">
+                <input type="text" id="lbl_entrega_hepr" formControlName="gestor"  placeholder="Gestor do contrato" />
+              </div>
+            </div>
+
+            <div class="row valign-wrapper" formGroupName="almox_sede">
+              <div class="col s4">
+                <input type="checkbox" id="cbx_entrega_almox_sede" formControlName="check" (change)="onChangeEndereco('almox_sede')" />
+                <label for="cbx_entrega_almox_sede">Almoxarifado Sede</label>
+              </div>
+
+              <div class="col s8">
+                <input type="text" id="lbl_entrega_almox_sede" formControlName="gestor" placeholder="Gestor do contrato"/>
+              </div>
+            </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <hr>
+      <div class="col s5">
+        <h5>Forma de Entrega</h5>
+          <p>
+            <input name="forma_entrega" value="parcelada" type="radio" id="parcelada" (click)="onSelectFormaEntrega(true)" formControlName="forma_entrega" />
+            <label for="parcelada">Parcelada</label>
+          </p>
+          <p>
+            <input name="forma_entrega" type="radio" id="unica" (click)="onSelectFormaEntrega(false)" formControlName="forma_entrega" />
+            <label for="unica">Única</label>
+          </p>
+      </div>
+
+      <div class="col s7" *ngIf="parcelada">
+        <h5>Período</h5>
+        <div class="row">
+          <div class="col s6">
+            <p>
+              <input name="group2" type="radio" id="semanal" />
+              <label for="semanal">Semanal</label>
+            </p>
+            <p>
+              <input name="group2" type="radio" id="quinzenal" />
+              <label for="quinzenal">Quinzenal</label>
+            </p>
+            <p>
+              <input name="group2" type="radio" id="mensal" />
+              <label for="mensal">Mensal</label>
+            </p>
+          </div>
+
+          <div class="row">
+            <div class="col s6">
+               <p>
+                <input name="group2" type="radio" id="bimestral" />
+                <label for="bimestral">Bimestral</label>
+              </p>
+              <p>
+                <input name="group2" type="radio" id="trimestral" />
+                <label for="trimestral">Trimestral</label>
+              </p>
+              <p>
+                <input name="group2" type="radio" id="Anual" />
+                <label for="Anual">Anual</label>
+              </p>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col s4 offset-s8 right-align">
+        <button type="submit" [disabled]="!myForm.valid" class="btn waves-effect">Salvar</button>
+      </div>
+    </div>
+  </form>
+</div>
