@@ -15,6 +15,7 @@ export class ProcessoMasterComponent implements OnInit {
   ngOnInit() {
     this.prcSrv.getProcessos().subscribe( (list) => {
       this.processos = this.filteredProcessos = list;
+      console.log('processos: ',this.processos);
     });
   }
   listProcessos(){
@@ -23,7 +24,6 @@ export class ProcessoMasterComponent implements OnInit {
   search(search: string){
     this.filteredProcessos = this.processos.filter(processo => processo.fornecedor.toUpperCase().includes(search.toUpperCase()) || 
                                                                processo.objeto.toUpperCase().includes(search.toUpperCase()) ||
-                                                               processo.forma_entrega.toUpperCase().includes(search.toUpperCase()) ||
                                                                processo.numero.toUpperCase().includes(search.toUpperCase()) ||
                                                                processo.ano.toUpperCase().includes(search.toUpperCase())
                                                                );
