@@ -10,11 +10,13 @@ import { Router } from '@angular/router';
 export class HeaderComponent implements OnInit{
   user: any = null;
   constructor(private authService: AuthService, private router: Router) { }
-
+  email: string = "";
   ngOnInit() {
     this.authService.isAuthenticated()
       .subscribe(value => {
         this.user = value;
+        this.user ? this.email = this.user.auth.email : this.email = ""; 
+         
     });
   }
 
